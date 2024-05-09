@@ -1,0 +1,16 @@
+{
+  "name": "notly_backend",
+  "version": "1.0.0",
+  "description": "Notly backend",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "sequelize": "^6.37.3"
+  }
+}
