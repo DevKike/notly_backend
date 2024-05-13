@@ -1,9 +1,16 @@
 const { models } = require("../../../db/sequelize");
 
+const findUserByEmail = async (userData) => {
+  try {
+    return await models.User.findOne({ where: { email: userData.email } });
+  } catch (error) {
+    throw error;
+  }
+};
+
 const findRoleByName = async (userData) => {
   try {
-    return role = await models.Role.findOne({ where: { name: userData.role } });
-    
+    return await models.Role.findOne({ where: { name: userData.role } });
   } catch (error) {
     throw error;
   }
@@ -11,11 +18,10 @@ const findRoleByName = async (userData) => {
 
 const register = async (userData) => {
   try {
-    return newUser = await models.User.create(userData);
-
+    return await models.User.create(userData);
   } catch (error) {
     throw error;
   }
-}
+};
 
-module.exports = { findRoleByName, register };
+module.exports = { findUserByEmail, findRoleByName, register };
