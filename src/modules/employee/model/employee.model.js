@@ -1,5 +1,6 @@
 const { DataTypes, Model } = require("sequelize");
 const { ROLE_TABLE } = require("./role.model");
+const { COMPANY_TABLE } = require("../../company/model/company.model");
 
 const EMPLOYEE_TABLE = "employees";
 
@@ -29,10 +30,18 @@ const EmployeeSchema = {
     type: DataTypes.STRING,
   },
   roleId: {
-    allowNull: true,
+    allowNull: false,
     type: DataTypes.INTEGER,
     references: {
       model: ROLE_TABLE,
+      key: "id",
+    },
+  },
+  companyId: {
+    allowNull: false,
+    type: DataTypes.INTEGER,
+    references: {
+      model: COMPANY_TABLE,
       key: "id",
     },
   },
@@ -43,6 +52,10 @@ class Employee extends Model {
     this.belongsTo(models.Role, {
       as: "role",
       foreignKey: "roleId",
+    });
+    this.belongsTo(models.Company, {
+      as: "company",
+      foreignKey: "companyId",
     });
   }
 

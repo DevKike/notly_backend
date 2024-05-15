@@ -32,7 +32,12 @@ const CompanySchema = {
 };
 
 class Company extends Model {
-  static associate(models) {}
+  static associate(models) {
+    this.hasMany(models.Employee, {
+      as: "employees",
+      foreignKey: "companyId",
+    });
+  }
 
   static config(sequelize) {
     return {
