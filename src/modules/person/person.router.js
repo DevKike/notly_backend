@@ -22,7 +22,7 @@ personRouter.post("/register", schemaValidator(registerSchema), async (req, res)
         error: error.message,
       });
     } else {
-      //422 para not created
+      //422 for not created
       res.status(500).json({
         message: "Internal server error",
         error: error.message,
@@ -33,9 +33,23 @@ personRouter.post("/register", schemaValidator(registerSchema), async (req, res)
 
 personRouter.post("/login", schemaValidator(loginSchema), async (req, res) => {
   try {
+    const personData = req.body;
+    const token = await loginPerson(personData);
     
+    res.status(200).json({
+      message: "User was successfully logged in",
+      token: token,
+    });
   } catch (error) {
-
+    if (error.message === "Invalid email address or password. Please try again") {
+      res.status(400).json({
+        error: error.message,
+      })
+    }
+    res.status(500).json({
+      message: "Internal server error",
+      error: error.message,
+    });
   }
 });
 

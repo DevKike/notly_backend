@@ -16,6 +16,14 @@ const findRoleByName = async (name) => {
   }
 };
 
+const findRoleById = async (id) => {
+  try {
+    return await models.Role.findOne({ where: { id }});
+  } catch (error) {
+    throw error;
+  }
+}
+
 const findRoles = async () => {
   try {
     return await models.Role.findAll();
@@ -24,12 +32,12 @@ const findRoles = async () => {
   }
 };
 
-const register = async (userData) => {
+const register = async (personData) => {
   try {
-    return await models.Person.create(userData);
+    return await models.Person.create(personData);
   } catch (error) {
     throw error;
   }
 };
 
-module.exports = { findPersonByEmail, findRoleByName, findRoles, register };
+module.exports = { findPersonByEmail, findRoleByName, findRoleById, findRoles, register };

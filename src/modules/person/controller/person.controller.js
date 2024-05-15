@@ -1,4 +1,4 @@
-const { findPersonByEmail, findRoleByName, register, findRoles } = require("../service/person.service");
+const { findPersonByEmail, findRoleByName, register, findRoles, findRoleById } = require("../service/person.service");
 const { hash, compare } = require("../../../util/bcrypt");
 const { signToken } = require("../../../util/jwtToken");
 
@@ -36,9 +36,9 @@ const registerPerson = async (personData) => {
 
 const loginPerson = async ({ email, password }) => {
   try {
-    const personEmail = await findPersonByEmail({ email });
+    const person = await findPersonByEmail(email);
 
-    if (!personEmail) {
+    if (!person) {
       throw new Error("Invalid email address or password. Please try again");
     }
 
@@ -48,7 +48,13 @@ const loginPerson = async ({ email, password }) => {
       throw new Error("Invalid email address or password. Please try again");
     }
 
-    const token = signToken(person.id, person.role.name);
+    const roleId = person.dataValues.roleId;
+    const role = await findRoleById(roleId);
+
+    const personId = person.id;
+    const roleName = role.dataValues.name;
+
+    const token = signToken(personId, roleName);
     
     return token;
   } catch (error) {
