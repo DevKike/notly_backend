@@ -1,9 +1,9 @@
 const { DataTypes, Model } = require("sequelize");
 const { ROLE_TABLE } = require("./role.model");
 
-const PERSON_TABLE = "people";
+const EMPLOYEE_TABLE = "employees";
 
-const PersonSchema = {
+const EmployeeSchema = {
   id: {
     allowNull: false,
     type: DataTypes.INTEGER,
@@ -38,22 +38,22 @@ const PersonSchema = {
   },
 };
 
-class Person extends Model {
+class Employee extends Model {
   static associate(models) {
     this.belongsTo(models.Role, {
-      foreignKey: "roleId",
       as: "role",
+      foreignKey: "roleId",
     });
   }
 
   static config(sequelize) {
     return {
       sequelize,
-      tableName: PERSON_TABLE,
-      modelName: "Person",
+      tableName: EMPLOYEE_TABLE,
+      modelName: "Employee",
       timestamps: false,
     };
   }
 }
 
-module.exports = { PERSON_TABLE, PersonSchema, Person };
+module.exports = { EMPLOYEE_TABLE, EmployeeSchema, Employee };

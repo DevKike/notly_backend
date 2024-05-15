@@ -1,23 +1,20 @@
 const express = require("express");
-const { registerPerson, loginPerson, getRoles } = require("./controller/person.controller");
+const { registerEmployee, loginEmployee, getRoles } = require("./controller/employee.controller");
 const schemaValidator = require("../../middleware/schemaValidator.middleware");
-const { registerSchema, loginSchema } = require("./schema/person.schema");
+const { registerSchema, loginSchema } = require("./schema/employee.schema");
 
-const personRouter = express.Router();
+const employeeRouter = express.Router();
 
-personRouter.post("/register", schemaValidator(registerSchema), async (req, res) => {
+employeeRouter.post("/register", schemaValidator(registerSchema), async (req, res) => {
   try {
-    const personData = req.body;
-    await registerPerson(personData);
+    const employeeData = req.body;
+    await registerEmployee(employeeData);
 
     res.status(201).json({
-      message: "Person was successfully registered",
+      message: "Employee was successfully registered",
     });
   } catch (error) {
-    if (
-      error.message === "Email already in use" ||
-      error.message === "Role was not found"
-    ) {
+    if (error.message === "Email already in use" || error.message === "Role was not found") {
       res.status(400).json({
         error: error.message,
       });
@@ -31,13 +28,13 @@ personRouter.post("/register", schemaValidator(registerSchema), async (req, res)
   }
 });
 
-personRouter.post("/login", schemaValidator(loginSchema), async (req, res) => {
+employeeRouter.post("/login", schemaValidator(loginSchema), async (req, res) => {
   try {
-    const personData = req.body;
-    const token = await loginPerson(personData);
+    const employeeData = req.body;
+    const token = await loginEmployee(employeeData);
     
     res.status(200).json({
-      message: "User was successfully logged in",
+      message: "Employee was successfully logged in",
       token: token,
     });
   } catch (error) {
@@ -53,7 +50,7 @@ personRouter.post("/login", schemaValidator(loginSchema), async (req, res) => {
   }
 });
 
-personRouter.get("/roles", async (req, res) => {
+employeeRouter.get("/roles", async (req, res) => {
   try {
     const roles = await getRoles();
 
@@ -69,4 +66,4 @@ personRouter.get("/roles", async (req, res) => {
   }
 });
 
-module.exports = personRouter;
+module.exports = employeeRouter;

@@ -22,8 +22,8 @@ const RoleSchema = {
 
 class Role extends Model {
   static associate(models) {
-    this.hasMany(models.Person, {
-      as: "people",
+    this.hasMany(models.Employee, {
+      as: "employees",
       foreignKey: "roleId",
     });
   }
