@@ -13,6 +13,6 @@ module.exports = {
     PORT: process.env.DB_PORT,
   },
   TOKEN: {
-    jwtToken: process.env.TOKEN,
+    jwtToken: process.env.SECRET_ACCESS_TOKEN,
   }
 };
