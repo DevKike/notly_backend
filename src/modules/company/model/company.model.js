@@ -17,14 +17,17 @@ const CompanySchema = {
   nit: {
     allowNull: false,
     type: DataTypes.STRING,
+    unique: true,
   },
   cellPhone: {
     allowNull: false,
     type: DataTypes.STRING,
+    unique: true,
   },
   email: {
     allowNull: false,
     type: DataTypes.STRING,
+    unique: true,
   },
 };
 
