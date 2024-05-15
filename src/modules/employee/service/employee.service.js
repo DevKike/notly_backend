@@ -32,9 +32,9 @@ const findRoles = async () => {
   }
 };
 
-const register = async (personData) => {
+const register = async (employeeData) => {
   try {
-    return await models.Employee.create(personData);
+    return await models.Employee.create(employeeData);
   } catch (error) {
     throw error;
   }
