@@ -1,12 +1,14 @@
 const express = require("express");
-const registerCompany = require("./controller/company.controller");
+const registerCompanyAndDirector = require("./controller/company.controller");
+const schemaValidator = require("../../middleware/schemaValidator.middleware");
+const registerCompanyAndDirectorSchema = require("./schema/company.schema");
 
 const companyRouter = express.Router();
 
-companyRouter.post("/", async (req, res) => {
+companyRouter.post("/", schemaValidator(registerCompanyAndDirectorSchema), async (req, res) => {
   try {
-    const companyData = req.body;
-    await registerCompany(companyData);
+    const { companyData, directorData } = req.body;
+    await registerCompanyAndDirector(companyData, directorData);
 
     res.status(201).json({
       message: "Company was successfully registered",

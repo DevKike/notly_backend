@@ -1,18 +1,16 @@
-const { findEmployeeByEmail, findRoleByName, register, findRoles, findRoleById } = require("../service/employee.service");
+const { findEmployeeByEmail, findRoleByName, register, findRoles, findRoleById, update } = require("../service/employee.service");
 const { hash, compare } = require("../../../util/bcrypt");
 const { signToken } = require("../../../util/jwtToken");
 
 const registerEmployee = async (employeeData) => {
   try {
-    const email = employeeData.email;
-    const isEmailExists = await findEmployeeByEmail(email);
+    const isEmailExists = await findEmployeeByEmail(employeeData.email);
 
     if (isEmailExists) {
       throw new Error("Email already in use");
     }
 
-    const roleName = employeeData.role;
-    const role = await findRoleByName(roleName);
+    const role = await findRoleByName(employeeData.role);
 
     if (!role) {
       throw new Error("Role was not found");
@@ -62,6 +60,14 @@ const loginEmployee = async ({ email, password }) => {
   }
 };
 
+const updateEmployeeData = async (employeeId, employeeData) => {
+  try {
+    return await update(employeeId, employeeData);
+  } catch (error) {
+    throw error;
+  }
+}
+
 const getRoles = async () => {
   try {
     return await findRoles();
@@ -70,4 +76,4 @@ const getRoles = async () => {
   }
 };
 
-module.exports = { registerEmployee, loginEmployee, getRoles };
+module.exports = { registerEmployee, loginEmployee, updateEmployeeData, getRoles };

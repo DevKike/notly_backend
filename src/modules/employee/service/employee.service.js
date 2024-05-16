@@ -8,6 +8,14 @@ const findEmployeeByEmail = async (email) => {
   }
 };
 
+const findEmployeeById = async (id) => {
+  try {
+    return await models.Employee.findOne({ where: { id: id } });
+  } catch (error) {
+    throw error;
+  }
+};
+
 const findRoleByName = async (name) => {
   try {
     return await models.Role.findOne({ where: { name } });
@@ -22,7 +30,7 @@ const findRoleById = async (id) => {
   } catch (error) {
     throw error;
   }
-}
+};
 
 const findRoles = async () => {
   try {
@@ -40,4 +48,12 @@ const register = async (employeeData) => {
   }
 };
 
-module.exports = { findEmployeeByEmail, findRoleByName, findRoleById, findRoles, register };
+const update = async (employeeData) => {
+  try {
+    return await models.Employee.update(employeeData);
+  } catch (error) {
+    throw error;
+  }
+};
+
+module.exports = { findEmployeeByEmail, findEmployeeById, findRoleByName, findRoleById, findRoles, register, update };

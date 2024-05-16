@@ -25,9 +25,18 @@ const EmployeeSchema = {
     type: DataTypes.STRING,
     unique: true,
   },
+  cellPhone: {
+    allowNull: true,
+    type: DataTypes.STRING,
+    unique: true,
+  },
   password: {
     allowNull: false,
     type: DataTypes.STRING,
+  },
+  active: {
+    allowNull: false,
+    type: DataTypes.BOOLEAN,
   },
   roleId: {
     allowNull: false,

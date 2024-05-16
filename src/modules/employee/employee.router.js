@@ -1,7 +1,9 @@
 const express = require("express");
-const { registerEmployee, loginEmployee, getRoles } = require("./controller/employee.controller");
+const { registerEmployee, loginEmployee, updateEmployeeData, getRoles } = require("./controller/employee.controller");
 const schemaValidator = require("../../middleware/schemaValidator.middleware");
-const { registerSchema, loginSchema } = require("./schema/employee.schema");
+const { registerSchema, loginSchema, updateSchema } = require("./schema/employee.schema");
+const authToken = require("../../middleware/authToken.middleware");
+const checkEmployeeStatus = require("../../middleware/checkEmployeeStatus.middleware");
 
 const employeeRouter = express.Router();
 
@@ -43,6 +45,25 @@ employeeRouter.post("/login", schemaValidator(loginSchema), async (req, res) => 
         error: error.message,
       })
     }
+    res.status(500).json({
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+});
+
+employeeRouter.patch("/update", checkEmployeeStatus(), authToken(), schemaValidator(updateSchema), async (req, res) => {
+  try {
+    console.log("Se accedió al recurso");
+    const employeeId = req.user;
+    const employeeData = req.body;
+    console.log(employeeId)
+    //await updateEmployeeData(employeeId, employeeData);
+
+    res.status(200).json({
+      message: "Data was updated successfully",
+    });
+  } catch (error) {
     res.status(500).json({
       message: "Internal server error",
       error: error.message,
