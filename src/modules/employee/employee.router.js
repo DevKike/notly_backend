@@ -4,7 +4,7 @@ const schemaValidator = require("../../middleware/schemaValidator.middleware");
 const { registerSchema, loginSchema, updateSchema } = require("./schema/employee.schema");
 const authToken = require("../../middleware/authToken.middleware");
 const verifyRole = require("../../middleware/verifyRole.middleware");
-const checkStatus = require("../../middleware/checkStatus.middleware");
+const checkActiveStatus = require("../../middleware/checkActiveStatus.middleware");
 
 const employeeRouter = express.Router();
 
@@ -55,9 +55,9 @@ employeeRouter.post("/login", schemaValidator(loginSchema), async (req, res) => 
   }
 });
 
-employeeRouter.patch("/update", authToken(), checkStatus(), verifyRole("Director", "Assistant Manager"), schemaValidator(updateSchema), async (req, res) => {
+employeeRouter.patch("/update", authToken(), checkActiveStatus(), verifyRole("Director", "Assistant Manager"), schemaValidator(updateSchema), async (req, res) => {
   try {
-    const { employeeId, employeeData} = req.body;
+    const { employeeId, employeeData } = req.body;
 
     const idToNumber = Number(employeeId);
 
@@ -81,7 +81,7 @@ employeeRouter.patch("/update", authToken(), checkStatus(), verifyRole("Director
   }
 });
 
-employeeRouter.get("/roles", authToken(), checkStatus(), verifyRole("Director", "Assistant Manager"), async (req, res) => {
+employeeRouter.get("/roles", authToken(), checkActiveStatus(), verifyRole("Director", "Assistant Manager"), async (req, res) => {
   try {
     const roles = await getRoles();
 
