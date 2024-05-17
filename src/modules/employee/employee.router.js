@@ -9,7 +9,10 @@ const employeeRouter = express.Router();
 
 employeeRouter.post("/register", authToken(), verifyDirectorRole(), schemaValidator(registerSchema), async (req, res) => {
   try {
-    const employeeData = req.body;
+    const employeeId = req.employee;
+
+    const employeeData = { ...req.body, employeeId };
+        
     await registerEmployee(employeeData);
 
     res.status(201).json({
@@ -53,8 +56,12 @@ employeeRouter.post("/login", schemaValidator(loginSchema), async (req, res) => 
 
 employeeRouter.patch("/update", authToken(), verifyDirectorRole(), schemaValidator(updateSchema), async (req, res) => {
   try {
-    const { employeeId , employeeData} = req.body; 
-    
+    const { employeeId , employeeData} = req.body;
+
+    if (!employeeId) {
+      employeeId = req.employee;
+    }
+
     await updateEmployeeData(employeeId, employeeData);
 
     res.status(200).json({

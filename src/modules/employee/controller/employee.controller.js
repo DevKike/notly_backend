@@ -16,11 +16,19 @@ const registerEmployee = async (employeeData) => {
       throw new Error("Role was not found");
     }
 
+    const employee = await findEmployeeById(employeeData.employeeId)
+
+    const companyId = employee.dataValues.companyId;
+
     const roleId = role.dataValues.id;
 
     const password = hash(employeeData.password);
 
-    const newEmployeeData = { ...employeeData, roleId, password };
+    const newEmployeeData = { ...employeeData, roleId, password, companyId };
+
+    if (newEmployeeData.employeeId) {
+      delete newEmployeeData.employeeId;
+    }
 
     if (newEmployeeData.role) {
       delete newEmployeeData.role;
@@ -60,12 +68,27 @@ const loginEmployee = async ({ email, password }) => {
   }
 };
 
-const updateEmployeeData = async (employeeId, employeeData) => {
+const getEmployeeData = async (employeeId) => {
   try {
-    const employee = findEmployeeById(employeeId);
+    const employee = await findEmployeeById(employeeId);
 
     if (!employee) {
       throw new Error("Employee not found");
+    }
+
+    return employee;
+  } catch (error) {
+    throw error;
+  }
+}
+
+const updateEmployeeData = async (employeeId, employeeData) => {
+  try {
+    const employee = await getEmployeeData(employeeId);
+
+    if (employeeData?.password) {
+      const password = hash(employeeData.password);
+      employeeData.password = password;
     }
 
     return await update(employeeId, employeeData);
