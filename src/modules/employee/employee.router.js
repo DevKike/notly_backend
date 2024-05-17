@@ -3,11 +3,11 @@ const { registerEmployee, loginEmployee, updateEmployeeData, getRoles } = requir
 const schemaValidator = require("../../middleware/schemaValidator.middleware");
 const { registerSchema, loginSchema, updateSchema } = require("./schema/employee.schema");
 const authToken = require("../../middleware/authToken.middleware");
-const checkEmployeeStatus = require("../../middleware/checkEmployeeStatus.middleware");
+const verifyDirectorRole = require("../../middleware/verifyRole.middleware");
 
 const employeeRouter = express.Router();
 
-employeeRouter.post("/register", schemaValidator(registerSchema), async (req, res) => {
+employeeRouter.post("/register", authToken(), verifyDirectorRole(), schemaValidator(registerSchema), async (req, res) => {
   try {
     const employeeData = req.body;
     await registerEmployee(employeeData);
@@ -21,7 +21,6 @@ employeeRouter.post("/register", schemaValidator(registerSchema), async (req, re
         error: error.message,
       });
     } else {
-      //422 for not created
       res.status(500).json({
         message: "Internal server error",
         error: error.message,
@@ -52,10 +51,9 @@ employeeRouter.post("/login", schemaValidator(loginSchema), async (req, res) => 
   }
 });
 
-employeeRouter.patch("/update", checkEmployeeStatus(), authToken(), schemaValidator(updateSchema), async (req, res) => {
+employeeRouter.patch("/update", authToken(), schemaValidator(updateSchema), async (req, res) => {
   try {
-    console.log("Se accedió al recurso");
-    const employeeId = req.user;
+    const employeeId = req.employee;
     const employeeData = req.body;
     console.log(employeeId)
     //await updateEmployeeData(employeeId, employeeData);
