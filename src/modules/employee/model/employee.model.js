@@ -25,7 +25,7 @@ const EmployeeSchema = {
     type: DataTypes.STRING,
     unique: true,
   },
-  cellPhone: {
+  phoneNumber: {
     allowNull: true,
     type: DataTypes.STRING,
     unique: true,
