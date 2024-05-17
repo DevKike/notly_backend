@@ -51,12 +51,11 @@ employeeRouter.post("/login", schemaValidator(loginSchema), async (req, res) => 
   }
 });
 
-employeeRouter.patch("/update", authToken(), schemaValidator(updateSchema), async (req, res) => {
+employeeRouter.patch("/update", authToken(), verifyDirectorRole(), schemaValidator(updateSchema), async (req, res) => {
   try {
-    const employeeId = req.employee;
-    const employeeData = req.body;
-    console.log(employeeId)
-    //await updateEmployeeData(employeeId, employeeData);
+    const { employeeId , employeeData} = req.body; 
+    
+    await updateEmployeeData(employeeId, employeeData);
 
     res.status(200).json({
       message: "Data was updated successfully",

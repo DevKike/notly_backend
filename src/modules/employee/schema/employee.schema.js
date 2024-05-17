@@ -28,7 +28,12 @@ const loginSchema = Joi.object({
 });
 
 const updateSchema = Joi.object({
+  name,
+  last_name,
+  email,
+  cellPhone,
   password,
+  active
 })
 
 module.exports = { registerSchema, loginSchema, updateSchema };

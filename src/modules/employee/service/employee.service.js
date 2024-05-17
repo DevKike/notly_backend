@@ -48,9 +48,9 @@ const register = async (employeeData) => {
   }
 };
 
-const update = async (employeeData) => {
+const update = async (employeeId, employeeData) => {
   try {
-    return await models.Employee.update(employeeData);
+    return await models.Employee.update(employeeData, { where: { employeeId: employeeId } });
   } catch (error) {
     throw error;
   }

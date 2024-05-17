@@ -1,4 +1,4 @@
-const { findEmployeeByEmail, findRoleByName, register, findRoles, findRoleById, update } = require("../service/employee.service");
+const { findEmployeeByEmail, findRoleByName, register, findRoles, findRoleById, update, findEmployeeById } = require("../service/employee.service");
 const { hash, compare } = require("../../../util/bcrypt");
 const { signToken } = require("../../../util/jwtToken");
 
@@ -62,6 +62,12 @@ const loginEmployee = async ({ email, password }) => {
 
 const updateEmployeeData = async (employeeId, employeeData) => {
   try {
+    const employee = findEmployeeById(employeeId);
+
+    if (!employee) {
+      throw new Error("Employee not found");
+    }
+
     return await update(employeeId, employeeData);
   } catch (error) {
     throw error;
