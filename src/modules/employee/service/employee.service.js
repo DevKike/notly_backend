@@ -40,17 +40,17 @@ const findRoles = async () => {
   }
 };
 
-const register = async (employeeData) => {
+const register = async (data) => {
   try {
-    return await models.Employee.create(employeeData);
+    return await models.Employee.create(data);
   } catch (error) {
     throw error;
   }
 };
 
-const update = async (employeeData) => {
+const update = async (data) => {
   try {
-    return await models.Employee.update(employeeData, { where: { id: employeeData.id } });
+    return await models.Employee.update(data, { where: { id: data.id } });
   } catch (error) {
     throw error;
   }
