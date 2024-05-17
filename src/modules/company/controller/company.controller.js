@@ -1,5 +1,6 @@
-const { findCompanyByNit, findCompanyByCellPhone, registerCompany, findCompanyByEmail } = require("../service/company.service");
-const { registerEmployee } = require("../../employee/controller/employee.controller");
+const { findRoleByName } = require("../../employee/service/employee.service");
+const { findCompanyByNit, findCompanyByCellPhone, register, findCompanyByEmail } = require("../service/company.service");
+const { hash } = require("../../../util/bcrypt");
 
 const registerCompanyAndDirector = async (companyData, directorData) => {
   try {
@@ -21,13 +22,24 @@ const registerCompanyAndDirector = async (companyData, directorData) => {
       throw new Error("Email already in use");
     }
 
-    const newCompany = await registerCompany(companyData);
+    const role = await findRoleByName(directorData.role);
 
-    const companyId = newCompany.dataValues.id;
+    if (!role) {
+      throw new Error("Role was not found");
+    }
 
-    const newDirectorData = { ...directorData, companyId }
+    const roleId = role.dataValues.id;
 
-    const newDirector = await registerEmployee(newDirectorData);
+    const password = hash(directorData.password);
+    
+    const newDirectorData = {...directorData, password, roleId}
+
+    if (newDirectorData.role) {
+      delete newDirectorData.role;
+    }
+
+    const { newCompany, newDirector } = await register(companyData, newDirectorData);
+
     return { company: newCompany, director: newDirector };
   } catch (error) {
     throw error;

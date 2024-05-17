@@ -25,12 +25,18 @@ const findCompanyByEmail = async (email) => {
   }
 };
 
-const registerCompany = async (companyData) => {
+const register = async (companyData, directorData) => {
   const transaction = await sequelize.transaction();
   try {
-    const res = await models.Company.create(companyData, { transaction });
+    const newCompany = await models.Company.create(companyData, { transaction });
+
+    const companyId = newCompany.dataValues.id;
+    const newDirectorData = { ...directorData, companyId };
+
+    const newDirector = await models.Employee.create(newDirectorData, { transaction });
+ 
     await transaction.commit();
-    return res;
+    return { company: newCompany, director: newDirector };
   } catch (error) {
     await transaction.rollback();
     throw error;
@@ -45,4 +51,4 @@ const findCompanyById = async (id) => {
   }
 };
 
-module.exports = { findCompanyByNit, findCompanyByCellPhone, findCompanyByEmail, registerCompany, findCompanyById };
+module.exports = { findCompanyByNit, findCompanyByCellPhone, findCompanyByEmail, register, findCompanyById };
