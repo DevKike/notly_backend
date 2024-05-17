@@ -6,7 +6,9 @@ const authToken = () => {
       const authorization = req.headers?.authorization;
 
       if (!authorization || !authorization.startsWith("Bearer ")) {
-        throw new Error("Token not provided");
+        return res.status(401).send({
+          error: "Token not provided",
+        });
       }
 
       const token = authorization.split(" ")[1];
@@ -17,7 +19,7 @@ const authToken = () => {
 
       next();
     } catch (error) {
-      res.status(403).send({
+      res.status(401).send({
         error: "Authorization denied",
       });
     }
