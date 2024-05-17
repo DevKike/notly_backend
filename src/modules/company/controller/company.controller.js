@@ -1,5 +1,5 @@
 const { findRoleByName } = require("../../employee/service/employee.service");
-const { findCompanyByNit, findCompanyByCellPhone, register, findCompanyByEmail } = require("../service/company.service");
+const { findCompanyByNit, findCompanyByPhoneNumber, register, findCompanyByEmail } = require("../service/company.service");
 const { hash } = require("../../../util/bcrypt");
 
 const registerCompanyAndDirector = async (companyData, directorData) => {
@@ -10,10 +10,10 @@ const registerCompanyAndDirector = async (companyData, directorData) => {
       throw new Error("Nit has already been registered");
     }
 
-    const isCellPhoneExists = await findCompanyByCellPhone(companyData.cellPhone);
+    const isPhoneNumberExists = await findCompanyByCellPhone(companyData.cellPhone);
 
-    if (isCellPhoneExists) {
-      throw new Error("Cellphone has already been registered");
+    if (isPhoneNumberExists) {
+      throw new Error("Phone number has already been registered");
     }
 
     const isEmailExists = await findCompanyByEmail(companyData.email);

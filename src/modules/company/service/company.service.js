@@ -9,9 +9,9 @@ const findCompanyByNit = async (nit) => {
   }
 };
 
-const findCompanyByCellPhone = async (cellPhone) => {
+const findCompanyByPhoneNumber = async (phoneNumber) => {
   try {
-    return await models.Company.findOne({ where: { cellPhone: cellPhone } });
+    return await models.Company.findOne({ where: { phoneNumber: phoneNumber } });
   } catch (error) {
     throw error;
   }
@@ -51,4 +51,4 @@ const findCompanyById = async (id) => {
   }
 };
 
-module.exports = { findCompanyByNit, findCompanyByCellPhone, findCompanyByEmail, register, findCompanyById };
+module.exports = { findCompanyByNit, findCompanyByPhoneNumber, findCompanyByEmail, register, findCompanyById };

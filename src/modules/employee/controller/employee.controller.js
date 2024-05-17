@@ -13,7 +13,7 @@ const registerEmployee = async (employeeData) => {
     const isPhoneNumberExists = await findEmployeeByPhoneNumber(employeeData.phoneNumber);
 
     if (isPhoneNumberExists) {
-      throw new Error("Phone number already in use");
+      throw new Error("Phone number has already been registered");
     }
 
     const role = await findRoleByName(employeeData.role);
