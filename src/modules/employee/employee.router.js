@@ -81,7 +81,7 @@ employeeRouter.patch("/update", authToken(), checkStatus(), verifyRole("Director
   }
 });
 
-employeeRouter.get("/roles", authToken(), verifyRole("Director"), async (req, res) => {
+employeeRouter.get("/roles", authToken(), checkStatus(), verifyRole("Director", "Assistant Manager"), async (req, res) => {
   try {
     const roles = await getRoles();
 
