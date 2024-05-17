@@ -12,7 +12,7 @@ const authToken = () => {
       const token = authorization.split(" ")[1];
       const decoded = verifyToken(token);
 
-      req.employee = decoded.employeeId;
+      req.employee = decoded.id;
       req.role = decoded.role;
 
       next();
