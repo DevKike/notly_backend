@@ -11,7 +11,7 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    queryInterface.dropTable(ROLE_TABLE);
     queryInterface.dropTable(EMPLOYEE_TABLE);
+    queryInterface.dropTable(ROLE_TABLE);
   }
 };
