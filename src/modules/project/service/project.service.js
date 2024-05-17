@@ -8,4 +8,28 @@ const create = async (data) => {
   }
 };
 
-module.exports = create;
+const findProjectById = async (id) => {
+  try {
+    return await models.Projects.findOne({ where: { id: id } });
+  } catch (error) {
+    throw error;
+  }
+};
+
+const findAllProjectsById = async (id) => {
+  try {
+    return await models.Project.findAll({ where: { id: id } });
+  } catch (error) {
+    throw error;
+  }
+};
+
+const update = async (id) => {
+  try {
+    return await models.Project.update({ where: { id: id } });
+  } catch (error) {
+    throw error;
+  }
+};
+
+module.exports = { create, findProjectById, findAllProjectsById, update };
