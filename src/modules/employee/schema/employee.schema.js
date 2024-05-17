@@ -9,7 +9,7 @@ const last_name = Joi.string().min(3).max(50);
 const email = Joi.string().min(6).max(30).email().message(customMessages);
 const phoneNumber = Joi.string().min(9).max(15);
 const password = Joi.string().min(6).max(16);
-const active = Joi.boolean()
+const active = Joi.boolean();
 const role = Joi.string().min(3).max(16);
 
 const registerSchema = Joi.object({
@@ -28,12 +28,16 @@ const loginSchema = Joi.object({
 });
 
 const updateSchema = Joi.object({
-  name,
-  last_name,
-  email,
-  phoneNumber,
-  password,
-  active
+  employeeId: Joi.string().allow(""),
+  employeeData: Joi.object({
+    name,
+    last_name,
+    email,
+    phoneNumber,
+    password,
+    active,
+    role,
+  }).or('name', 'last_name', 'email', 'phoneNumber', 'password', 'active', 'role'),
 });
 
 module.exports = { registerSchema, loginSchema, updateSchema };

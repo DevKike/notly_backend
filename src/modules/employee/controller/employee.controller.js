@@ -16,7 +16,7 @@ const registerEmployee = async (employeeData) => {
       throw new Error("Role was not found");
     }
 
-    const employee = await findEmployeeById(employeeData.employeeId)
+    const employee = await findEmployeeById(employeeData.employeeId);
 
     const companyId = employee.dataValues.companyId;
 
@@ -61,7 +61,7 @@ const loginEmployee = async ({ email, password }) => {
     const roleName = role.dataValues.name;
 
     const token = signToken(employeeId, roleName);
-    
+
     return token;
   } catch (error) {
     throw error;
@@ -80,7 +80,7 @@ const getEmployeeData = async (employeeId) => {
   } catch (error) {
     throw error;
   }
-}
+};
 
 const updateEmployeeData = async (employeeId, employeeData) => {
   try {
@@ -91,11 +91,13 @@ const updateEmployeeData = async (employeeId, employeeData) => {
       employeeData.password = password;
     }
 
-    return await update(employeeId, employeeData);
+    const employeeToUpdate = { ...employee.toJSON(), ...employeeData };
+
+    return await update(employeeToUpdate);
   } catch (error) {
     throw error;
   }
-}
+};
 
 const getRoles = async () => {
   try {

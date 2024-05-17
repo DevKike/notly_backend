@@ -3,11 +3,11 @@ const { registerEmployee, loginEmployee, updateEmployeeData, getRoles } = requir
 const schemaValidator = require("../../middleware/schemaValidator.middleware");
 const { registerSchema, loginSchema, updateSchema } = require("./schema/employee.schema");
 const authToken = require("../../middleware/authToken.middleware");
-const verifyDirectorRole = require("../../middleware/verifyRole.middleware");
+const verifyRole = require("../../middleware/verifyRole.middleware");
 
 const employeeRouter = express.Router();
 
-employeeRouter.post("/register", authToken(), verifyDirectorRole(), schemaValidator(registerSchema), async (req, res) => {
+employeeRouter.post("/register", authToken(), verifyRole("Director", "Assistant Manager"), schemaValidator(registerSchema), async (req, res) => {
   try {
     const employeeId = req.employee;
 
@@ -20,11 +20,11 @@ employeeRouter.post("/register", authToken(), verifyDirectorRole(), schemaValida
     });
   } catch (error) {
     if (error.message === "Email already in use" || error.message === "Role was not found") {
-      res.status(400).json({
+      return res.status(400).json({
         error: error.message,
       });
     } else {
-      res.status(500).json({
+      return res.status(500).json({
         message: "Internal server error",
         error: error.message,
       });
@@ -43,39 +43,44 @@ employeeRouter.post("/login", schemaValidator(loginSchema), async (req, res) => 
     });
   } catch (error) {
     if (error.message === "Invalid email address or password. Please try again") {
-      res.status(400).json({
+      return res.status(400).json({
         error: error.message,
       })
     }
-    res.status(500).json({
+    return res.status(500).json({
       message: "Internal server error",
       error: error.message,
     });
   }
 });
 
-employeeRouter.patch("/update", authToken(), verifyDirectorRole(), schemaValidator(updateSchema), async (req, res) => {
+employeeRouter.patch("/update", authToken(), verifyRole("Director", "Assistant Manager"), schemaValidator(updateSchema), async (req, res) => {
   try {
-    const { employeeId , employeeData} = req.body;
+    const { employeeId, employeeData} = req.body;
 
-    if (!employeeId) {
-      employeeId = req.employee;
-    }
+    const idToNumber = Number(employeeId);
 
-    await updateEmployeeData(employeeId, employeeData);
+    const employeeIdToUpdate = idToNumber || req.employee;
+
+    await updateEmployeeData(employeeIdToUpdate, employeeData);
 
     res.status(200).json({
       message: "Data was updated successfully",
     });
   } catch (error) {
-    res.status(500).json({
+    if (error.message === "Employee not found") {
+      return res.status(404).json({
+        message: error.message,
+      });
+    }
+    return res.status(500).json({
       message: "Internal server error",
       error: error.message,
     });
   }
 });
 
-employeeRouter.get("/roles", async (req, res) => {
+employeeRouter.get("/roles", authToken(), verifyRole("Director"), async (req, res) => {
   try {
     const roles = await getRoles();
 
