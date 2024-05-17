@@ -37,6 +37,10 @@ class Company extends Model {
       as: "employees",
       foreignKey: "companyId",
     });
+    this.hasMany(models.Project, {
+      as: "projects",
+      foreignKey: "companyId",
+    });
   }
 
   static config(sequelize) {
