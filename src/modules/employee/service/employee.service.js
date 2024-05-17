@@ -8,6 +8,14 @@ const findEmployeeByEmail = async (email) => {
   }
 };
 
+const findEmployeeByPhoneNumber = async (phoneNumber) => {
+  try {
+    return await models.Employee.findOne({ where: { phoneNumber: phoneNumber } });
+  } catch (error) {
+    throw error;
+  }
+}
+
 const findEmployeeById = async (id) => {
   try {
     return await models.Employee.findOne({ where: { id: id } });
@@ -56,4 +64,4 @@ const update = async (data) => {
   }
 };
 
-module.exports = { findEmployeeByEmail, findEmployeeById, findRoleByName, findRoleById, findRoles, register, update };
+module.exports = { findEmployeeByEmail, findEmployeeByPhoneNumber, findEmployeeById, findRoleByName, findRoleById, findRoles, register, update };

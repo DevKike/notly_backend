@@ -1,4 +1,4 @@
-const { findEmployeeByEmail, findRoleByName, register, findRoles, findRoleById, update, findEmployeeById } = require("../service/employee.service");
+const { findEmployeeByEmail, findEmployeeByPhoneNumber, findRoleByName, register, findRoles, findRoleById, update, findEmployeeById } = require("../service/employee.service");
 const { hash, compare } = require("../../../util/bcrypt");
 const { signToken } = require("../../../util/jwtToken");
 
@@ -8,6 +8,12 @@ const registerEmployee = async (employeeData) => {
 
     if (isEmailExists) {
       throw new Error("Email already in use");
+    }
+
+    const isPhoneNumberExists = await findEmployeeByPhoneNumber(employeeData.phoneNumber);
+
+    if (isPhoneNumberExists) {
+      throw new Error("Phone number already in use");
     }
 
     const role = await findRoleByName(employeeData.role);
