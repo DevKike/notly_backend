@@ -15,11 +15,11 @@ companyRouter.post("/", schemaValidator(registerCompanyAndDirectorSchema), async
     });
   } catch (error) {
     if (error.message === "Nit has already been registered" || error.message === "Cellphone has already been registered" || error.message === "Email already in use" || error.message === "Role was not found") {
-      res.status(400).json({
+      return res.status(400).json({
         message: error.message,
       });
     }
-    res.status(500).json({
+    return res.status(500).json({
       message: "Company was not created",
       error: error.message,
     });
