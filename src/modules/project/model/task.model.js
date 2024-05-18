@@ -1,9 +1,9 @@
 const { DataTypes, Model } = require("sequelize");
-const { COMPANY_TABLE } = require("../../company/model/company.model");
+const { PROJECT_TABLE } = require("./project.model");
 
-const PROJECT_TABLE = "projects";
+const TASK_TABLE = "tasks";
 
-const ProjectSchema = {
+const TaskSchema = {
   id: {
     allowNull: false,
     type: DataTypes.INTEGER,
@@ -19,6 +19,14 @@ const ProjectSchema = {
     allowNull: false,
     type: DataTypes.STRING,
   },
+  points: {
+    allowNull: false,
+    type: DataTypes.SMALLINT,
+  },
+  priority: {
+    allowNull: false,
+    type: DataTypes.SMALLINT,
+  },
   startDate: {
     allowNull: false,
     type: DataTypes.DATE,
@@ -31,36 +39,36 @@ const ProjectSchema = {
     allowNull: false,
     type: DataTypes.STRING,
   },
-  companyId: {
+  projectId: {
     allowNull: false,
     type: DataTypes.INTEGER,
     references: {
-      model: COMPANY_TABLE,
+      model: PROJECT_TABLE,
       key: "id",
     },
   },
 };
 
-class Project extends Model {
+class Task extends Model {
   static associate(models) {
-    this.belongsTo(models.Company, {
-      as: "companies",
-      foreignKey: "companyId",
-    });
-    this.hasMany(models.Task, {
-      as: "tasks",
+    this.belongsTo(models.Project, {
+      as: "project",
       foreignKey: "projectId",
+    });
+    this.belongsTo(models.Employee, {
+      as: "employee",
+      foreignKey: "employeeId",
     });
   }
 
   static config(sequelize) {
     return {
       sequelize,
-      tableName: PROJECT_TABLE,
+      tableName: TASK_TABLE,
       modelName: "Project",
       timestamps: false,
     };
   }
 }
 
-module.exports = { PROJECT_TABLE, ProjectSchema, Project };
+module.exports = { TASK_TABLE, TaskSchema, Task };
