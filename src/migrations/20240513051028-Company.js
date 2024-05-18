@@ -9,6 +9,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    queryInterface.dropTable(COMPANY_TABLE, CompanySchema);
+    queryInterface.dropTable(COMPANY_TABLE);
   },
 };

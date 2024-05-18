@@ -19,7 +19,7 @@ const CompanySchema = {
     type: DataTypes.STRING,
     unique: true,
   },
-  cellPhone: {
+  phoneNumber: {
     allowNull: false,
     type: DataTypes.STRING,
     unique: true,
@@ -35,6 +35,10 @@ class Company extends Model {
   static associate(models) {
     this.hasMany(models.Employee, {
       as: "employees",
+      foreignKey: "companyId",
+    });
+    this.hasMany(models.Project, {
+      as: "projects",
       foreignKey: "companyId",
     });
   }
