@@ -14,5 +14,8 @@ module.exports = {
   },
   TOKEN: {
     jwtToken: process.env.SECRET_ACCESS_TOKEN,
-  }
+  },
+  URL: {
+    FRONTEND: process.env.URL_FRONTEND,
+  },
 };
