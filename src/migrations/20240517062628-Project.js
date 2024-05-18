@@ -11,7 +11,7 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    queryInterface.dropTable(PROJECT_TABLE);
     queryInterface.dropTable(TASK_TABLE);
+    queryInterface.dropTable(PROJECT_TABLE);
   },
 };

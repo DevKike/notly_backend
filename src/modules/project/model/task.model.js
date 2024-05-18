@@ -1,5 +1,6 @@
 const { DataTypes, Model } = require("sequelize");
 const { PROJECT_TABLE } = require("./project.model");
+const { EMPLOYEE_TABLE } = require("../../employee/model/employee.model");
 
 const TASK_TABLE = "tasks";
 
@@ -44,6 +45,14 @@ const TaskSchema = {
     type: DataTypes.INTEGER,
     references: {
       model: PROJECT_TABLE,
+      key: "id",
+    },
+  },
+  employeeId: {
+    allowNull: false,
+    type: DataTypes.INTEGER,
+    references: {
+      model: EMPLOYEE_TABLE,
       key: "id",
     },
   },
