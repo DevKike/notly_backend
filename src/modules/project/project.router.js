@@ -4,7 +4,7 @@ const authToken = require("../../middleware/authToken.middleware");
 const checkActiveStatus = require("../../middleware/checkActiveStatus.middleware");
 const verifyRole = require("../../middleware/verifyRole.middleware");
 const schemaValidator = require("../../middleware/schemaValidator.middleware");
-const createSchema = require("./schema/project.schema");
+const { createSchema, updateSchema } = require("./schema/project.schema");
 
 const projectRouter = express.Router();
 
@@ -30,9 +30,11 @@ projectRouter.get("/get/all", authToken(), checkActiveStatus(), verifyRole("Dire
   try {
     const employeeId = req.employee;
 
-    await getProjects(employeeId);
+    const projects = await getProjects(employeeId);
+    
     res.status(200).json({
-      message: "Projects were sucessfully obtained",
+      message: "Projects were successfully obtained",
+      projects,
     });
   } catch (error) {
     res.status(500).json({
@@ -42,12 +44,16 @@ projectRouter.get("/get/all", authToken(), checkActiveStatus(), verifyRole("Dire
   }
 });
 
-projectRouter.patch("/update", authToken(), checkActiveStatus(), verifyRole("Director", "Assistant manager", "Project manager"), async (req, res) => {
+projectRouter.patch("/update", authToken(), checkActiveStatus(), verifyRole("Director", "Assistant manager", "Project manager"), schemaValidator(updateSchema), async (req, res) => {
   try {
-    const { projectId, projectData } = req.body 
+    const { projectId, projectData } = req.body;
     const employeeId = req.employee;
 
-    await updateProject(projectId, projectData, employeeId);
+    await updateProject(employeeId, projectId, projectData);
+    
+    res.status(200).json({
+      message: "Project was successfully updated"
+    });
   } catch (error) {
     res.status(500).json({
       message: "Internal server error",

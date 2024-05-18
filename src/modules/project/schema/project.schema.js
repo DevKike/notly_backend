@@ -14,4 +14,15 @@ const createSchema = Joi.object({
   status: status.required(),
 });
 
-module.exports = createSchema;
+const updateSchema = Joi.object({
+  projectId: Joi.string().allow(""),
+  projectData: Joi.object({
+    title,
+    description,
+    startDate,
+    endDate,
+    status,
+  }),
+});
+
+module.exports = { createSchema, updateSchema };
