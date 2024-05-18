@@ -7,13 +7,13 @@ const customMessages = {
 
 const name = Joi.string().min(3).max(50);
 const nit = Joi.string().min(9).max(9);
-const cellPhone = Joi.string().min(6).max(16);
+const phoneNumber = Joi.string().min(6).max(16);
 const email = Joi.string().min(6).max(30).email().message(customMessages);
 
 const companySchema = Joi.object({
   name: name.required(),
   nit: nit.required(),
-  cellPhone: cellPhone.required(),
+  phoneNumber: phoneNumber.required(),
   email: email.required(),
 });
 
