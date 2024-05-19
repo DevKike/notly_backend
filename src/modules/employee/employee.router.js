@@ -13,7 +13,7 @@ employeeRouter.post("/register", authToken(), verifyRole("Director", "Assistant 
     const employeeId = req.employee;
 
     const employeeData = { ...req.body, employeeId };
-        
+
     await registerEmployee(employeeData);
 
     res.status(201).json({
@@ -36,11 +36,13 @@ employeeRouter.post("/register", authToken(), verifyRole("Director", "Assistant 
 employeeRouter.post("/login", schemaValidator(loginSchema), async (req, res) => {
   try {
     const employeeData = req.body;
-    const token = await loginEmployee(employeeData);
-    
+  
+    const { token, role } = await loginEmployee(employeeData);
+
     res.status(200).json({
       message: "Employee was successfully logged in",
       token: token,
+      role: role,
     });
   } catch (error) {
     if (error.message === "Invalid email address or password. Please try again") {

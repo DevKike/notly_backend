@@ -1,5 +1,5 @@
-const { findRoleByName } = require("../../employee/service/employee.service");
-const { findCompanyByNit, findCompanyByPhoneNumber, register, findCompanyByEmail } = require("../service/company.service");
+const { findRoleByName, findEmployeeById } = require("../../employee/service/employee.service");
+const { findCompanyByNit, findCompanyByPhoneNumber, register, findCompanyByEmail, findAllCompanies, findCompanyById, update } = require("../service/company.service");
 const { hash } = require("../../../util/bcrypt");
 const { URL } = require("../../../config/config");
 
@@ -47,4 +47,28 @@ const registerCompanyAndDirector = async (companyData, directorData) => {
   }
 };
 
-module.exports = registerCompanyAndDirector;
+const getCompanyByDirector = async (directorId) => {
+  try {
+    const director = await findEmployeeById(directorId);
+
+    const companyDirectorId = director.dataValues.companyId;
+
+    return await findCompanyById(companyDirectorId);
+    } catch(error) {
+    throw error;
+  }
+}
+
+const updateCompanyData = async (directorId, companyData) => {
+  try {
+    const company = await getCompanyByDirector(directorId);
+    
+    const companyId = company.dataValues.id;
+
+    return await update(companyData, companyId);
+  } catch(error) {
+    throw error;
+  }
+}
+
+module.exports = { registerCompanyAndDirector, getCompanyByDirector, updateCompanyData };

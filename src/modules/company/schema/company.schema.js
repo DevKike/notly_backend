@@ -7,7 +7,7 @@ const customMessages = {
 
 const name = Joi.string().min(3).max(50);
 const nit = Joi.string().min(9).max(9);
-const phoneNumber = Joi.string().min(6).max(16);
+const phoneNumber = Joi.string().min(9).max(15);
 const email = Joi.string().min(6).max(30).email().message(customMessages);
 
 const companySchema = Joi.object({
@@ -22,4 +22,11 @@ const registerCompanyAndDirectorSchema = Joi.object({
   directorData: registerSchema.required(),
 });
 
-module.exports = registerCompanyAndDirectorSchema;
+const updateCompanySchema = Joi.object({
+  name,
+  nit,
+  phoneNumber,
+  email,
+});
+
+module.exports = { registerCompanyAndDirectorSchema, updateCompanySchema };

@@ -74,7 +74,7 @@ class Task extends Model {
     return {
       sequelize,
       tableName: TASK_TABLE,
-      modelName: "Project",
+      modelName: "Task",
       timestamps: false,
     };
   }

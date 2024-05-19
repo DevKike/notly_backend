@@ -68,7 +68,7 @@ const loginEmployee = async ({ email, password }) => {
 
     const token = signToken(employeeId, roleName);
 
-    return token;
+    return { token, role: roleName };
   } catch (error) {
     throw error;
   }

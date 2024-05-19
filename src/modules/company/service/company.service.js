@@ -43,6 +43,14 @@ const register = async (companyData, directorData) => {
   }
 };
 
+const update = async (data, id) => {
+  try {
+    return await models.Company.update(data, { where: { id: id } });
+  } catch(error) {
+    throw error;
+  }
+};
+
 const findCompanyById = async (id) => {
   try {
     return await models.Company.findOne({ where: { id: id } });
@@ -51,4 +59,4 @@ const findCompanyById = async (id) => {
   }
 };
 
-module.exports = { findCompanyByNit, findCompanyByPhoneNumber, findCompanyByEmail, register, findCompanyById };
+module.exports = { findCompanyByNit, findCompanyByPhoneNumber, findCompanyByEmail, register, update, findCompanyById };

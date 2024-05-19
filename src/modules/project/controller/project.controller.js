@@ -16,6 +16,14 @@ const createProject = async (projectData) => {
   }
 };
 
+const getProject = async (projectId) => {
+  try {
+    return await findProjectById(projectId);
+  } catch(error) {
+    throw error;
+  }
+}
+
 const getProjects = async (employeeId) => {
   try {
     const employee = await findEmployeeById(employeeId);
@@ -31,7 +39,6 @@ const getProjects = async (employeeId) => {
 const updateProject = async (employeeId, projectId, projectData) => {
   try {
     const employee = await findEmployeeById(employeeId);
-
     const project = await findProjectById(projectId);
     
     const employeeCompanyId = employee.dataValues.companyId;
@@ -63,4 +70,4 @@ const getRemainingDays = async (startDate, endDate) => {
   }
 };
 
-module.exports = { createProject, getProjects, updateProject, getRemainingDays };
+module.exports = { createProject, getProject, getProjects, updateProject, getRemainingDays };
