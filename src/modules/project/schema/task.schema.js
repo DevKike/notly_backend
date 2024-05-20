@@ -9,16 +9,13 @@ const endDate = Joi.date().format("YYYY-MM-DD").greater(Joi.ref("startDate"));
 const status = Joi.string().min(3).max(50);
 
 const createTaskSchema = Joi.object({
-  projectId: Joi.number().integer().min(1).required(),
-  projectData: Joi.object({
-    title: title.required(),
-    description: description.required(),
-    points: points.required(),
-    priority: priority.required(),
-    startDate: startDate.required(),
-    endDate: endDate.required(),
-    status: status.required(),
-  }),
+  title: title.required(),
+  description: description.required(),
+  points: points.required(),
+  priority: priority.required(),
+  startDate: startDate.required(),
+  endDate: endDate.required(),
+  status: status.required(),
 });
 
 module.exports = createTaskSchema;

@@ -1,6 +1,6 @@
 const express = require("express");
 const { createProject, getProjects, updateProject, getProject } = require("./controller/project.controller");
-const createTask = require("./controller/task.controller");
+const { createTask, getTask, getAllTasks} = require("./controller/task.controller");
 const authToken = require("../../middleware/authToken.middleware");
 const checkActiveStatus = require("../../middleware/checkActiveStatus.middleware");
 const verifyRole = require("../../middleware/verifyRole.middleware");
@@ -30,7 +30,7 @@ projectRouter.post("/create", authToken(), checkActiveStatus(), verifyRole("Dire
 
 projectRouter.get("/:projectId/get", authToken(), checkActiveStatus(), verifyRole("Director", "Assistant manager", "Project manager"), async(req, res) => {
   try{
-    const {projectId} = req.params;
+    const { projectId } = req.params;
 
     const project = await getProject(projectId);
 
@@ -82,15 +82,33 @@ projectRouter.patch("/update", authToken(), checkActiveStatus(), verifyRole("Dir
   }
 });
 
-projectRouter.post("/task/create", authToken(), schemaValidator(createTaskSchema), async (req, res) => {
+projectRouter.post("/:projectId/create/task", authToken(), schemaValidator(createTaskSchema), async (req, res) => {
   try {
-    const { projectId, taskData } = req.body;
+    const { projectId } = req.params;
+    const taskData = req.body;
     const employeeId = req.employee;
 
     await createTask(projectId, taskData, employeeId);
     
     res.status(201).json({
       message: "Task was successfully created",
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+});
+
+projectRouter.get("/get/task/:taskId", authToken(), async (req, res) => {
+  try {
+    const { taskId } = req.params;
+    const task = await getTask(taskId);
+
+    res.status(200).json({
+      message: "Task was successfully obtained",
+      task,
     });
   } catch (error) {
     res.status(500).json({
